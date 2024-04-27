@@ -350,131 +350,169 @@ Smallest node: 4
  Enter your choice9
 Height of treeheight of tree :  1*/
 
-// This C++ program implements a basic hash table using a simple linear probing technique for collision resolution. It is organized into two classes: `Hashtable` to represent individual entries in the hash table and `Hashing` to manage the hash table itself. Let's walk through the code step-by-step:
 
-// ### Class Definitions
 
-// #### 1. Class `Hashtable`
+
+
+// Absolutely! Let's break down the provided `BST::insert()` function and explain its purpose within a Binary Search Tree (BST).
+
+// **Understanding BSTs**
+
+// Before diving into the code, here's a quick refresher on Binary Search Trees:
+
+// * **BST Property:** A BST is a special type of binary tree where nodes are arranged in a specific order:
+//     * **Left Subtree:** All nodes in the left subtree of a node have values less than the node's value.
+//     * **Right Subtree:** All nodes in the right subtree of a node have values greater than the node's value.
+// * **Purpose:** This organized structure makes searching, insertion, and deletion efficient in BSTs.
+
+// **Code Breakdown**
+
+// The `BST::insert()` function is designed to insert a new node with a given value into the correct position within a BST, maintaining the BST property. Here's how it works:
+
+// 1. **Node Creation:**
+//    * `node *new_node, *temp;` : Declares two node pointers, `new_node` for the node to be inserted, and `temp` for traversing the tree.
+//    * `new_node = new node();` :  Allocates memory for the new node.
+//    * `new_node->left = NULL; new_node->right = NULL;`: Initializes the new node's left and right child pointers to NULL.
+//    * `cout << "\n Enter the Node value"; cin >> new_node->data;` : Prompts the user to enter the value and stores it in the `data` field of the new node.
+
+// 2. **Empty Tree Case:**
+//    * `if (root == NULL)` : Checks if the tree is empty (i.e., has no root node). If it is, the new node becomes the root of the tree.
+
+// 3. **Tree Traversal and Insertion:**
+//    * `else`: If the tree is not empty, a `while` loop is used to find the appropriate location to insert the new node.
+//    * `temp = root` : The traversal starts from the root node.
+//    * **Inside the while loop:**
+//       *  **Comparison:** Compares the value in `new_node` with the current `temp` node:
+//            * `new_node->data < temp->data` : If the new node's value is less, move to the left subtree (`temp = temp->left`).
+//            * `new_node->data > temp->data` : If the new node's value is greater, move to the right subtree (`temp = temp->right`).
+//       *  **Insertion Point:** If either `temp->left` or `temp->right` is NULL, it means the correct position to insert the new node has been found. It  assigns the `new_node` to the appropriate child of `temp`.
+
+// 4.  **Duplicate Handle:**
+//      * `else { cout << "data already exists"; }`:  This part (optional) handles the case where a duplicate value is attempted to be inserted. 
+
+// **Key Idea:** The `insert` function ensures that after the insertion is completed, the tree still adheres to the fundamental properties of a Binary Search Tree. 
+
+// **Let me know if you want to explore other BST operations (like searching or deletion) or discuss alternative insertion approaches!** 
+
+
+// The `search` function in the `BST` (Binary Search Tree) class is designed to check whether a given integer value (`key`) exists in the tree. This function returns `1` if the key is found and `0` if it is not found. Here's a detailed breakdown of the logic:
+
+// ### Function Definition
+
 // ```cpp
-// class Hashtable
+// int BST::search(int key)
 // {
-// public:
-//     int key;          // Stores the key of the hash entry
-//     long int mob_number; // Stores the mobile number, which acts as the value in the hash table
-// };
-// ```
-// This class contains two data members:
-// - `key`: an integer that represents the index position in the hash table.
-// - `mob_number`: a long integer that holds the mobile number associated with the key.
+//     node *temp;
+//     temp = root;
 
-// #### 2. Class `Hashing`
-// ```cpp
-// class Hashing
-// {
-//     Hashtable t[10]; // Array of `Hashtable` objects, effectively the hash table with 10 slots
-//     int i;           // Utility variable used for loops
-
-// public:
-//     Hashing();       // Constructor to initialize the hash table
-//     void insert();   // Method to insert a mobile number into the hash table
-//     void display();  // Method to display the contents of the hash table
-//     void search();   // Search method declaration (not implemented in the provided code)
-// };
-// ```
-// This class manages the hash table operations:
-// - `t[10]`: This array holds the hash table entries.
-// - The `Hashing()` constructor initializes the hash table with default values.
-// - The `insert()` and `display()` methods manage data insertion and visualization respectively.
-
-// ### Constructor `Hashing()`
-// ```cpp
-// Hashing()
-// {
-//     for (i = 0; i < 10; i++)
+//     while (1)
 //     {
-//         t[i].key = i;        // Set key as the index position
-//         t[i].mob_number = -1; // Initialize with -1 indicating empty slots
-//     }
-// }
-// ```
-// The constructor sets each slot's key to its index and initializes `mob_number` to -1, indicating that the slot is empty.
-
-// ### Method `display()`
-// ```cpp
-// void Hashing::display()
-// {
-//     cout << "Key\t" << "number\n";
-//     for (int i = 0; i < 10; i++)
-//     {
-//         cout << t[i].key << " \t " << t[i].mob_number << "\n";
-//     }
-// }
-// ```
-// This method prints the keys and their corresponding mobile numbers. If a mobile number is `-1`, it indicates that the slot is empty.
-
-// ### Method `insert()`
-// ```cpp
-// void Hashing::insert()
-// {
-//     long int temp_num;
-//     int position;
-//     cout << "\n Enter your mobile number ";
-//     cin >> temp_num;
-//     position = temp_num % 10;  // Hash function: mod 10
-
-//     if (t[position].mob_number == -1)
-//     {
-//         t[position].mob_number = temp_num; // If no collision, place the number
-//     }
-//     else
-//     {
-//         cout << "collision occur";
-//         int original_position = temp_num % 10;
-//         int position = (original_position + 1) % 10;
-//         while (position != original_position && t[position].mob_number != -1)
+//         if (key < temp->data)
 //         {
-//             position = (position + 1) % 10; // Linear probing to find an empty slot
+//             if (temp->left != NULL)
+//             {
+//                 temp = temp->left;
+//             }
+//             else
+//                 return (0);
 //         }
-//         if (position == original_position)
+//         else if (key > temp->data)
 //         {
-//             cout << "\nHashTable is Full";
+//             if (temp->right != NULL)
+//             {
+//                 temp = temp->right;
+//             }
+//             else
+//                 return (0);
 //         }
-//         t[position].mob_number = temp_num; // Place the number in the found slot
+//         else
+//         {
+//             return 1;
+//         }
 //     }
 // }
 // ```
-// This method prompts the user for a mobile number and uses `temp_num % 10` as a simple hash function to determine the array index:
-// - If there is no collision (the slot is empty), it stores the number.
-// - If there is a collision, it uses linear probing to find an empty slot, wrapping around if necessary. If it wraps around to the original position, it declares the table full.
 
-// ### `main()` Function
-// ```cpp
-// int main()
-// {
-//     Hashing h;
-//     int ch;
-//     do
-//     {
-//         cout << "\n 1.Insert";
-//         cout << "\n 2.display";
-//         cout << "\n Enter a choice";
-//         cin >> ch;
-//         switch (ch)
-//         {
-//             case 1:
-//                 h.insert();
-//                 break;
-//             case 2:
-//                 h.display();
-//                 break;
-//             default:
-//                 cout << "\n Invalid choice";
-//         }
-//     } while (ch <= 2);
-//     return 0;
-// }
-// ```
-// The `main()` function creates an instance of `Hashing` and provides a basic menu for the user to insert mobile numbers or display the hash table. It continues to present the menu as long as the user selects either `1` (Insert) or `2` (Display).
+// ### Step-by-Step Logic
 
-// ### Output Example
-// The provided output example
+// 1. **Initialize Node Pointer**:
+//    - `temp` is initialized to point to the `root` of the BST. This is the starting point for the search.
+
+// 2. **Infinite Loop**:
+//    - The function uses a `while (1)` loop, which is an infinite loop that will continue until explicitly broken out of with a `return` statement.
+
+// 3. **Key Comparison**:
+//    - Inside the loop, the function first checks if the `key` is less than the `data` stored at the current node (`temp->data`).
+
+// 4. **Traverse Left**:
+//    - If `key < temp->data`, the function then checks if there is a left child (`temp->left != NULL`):
+//      - If there is a left child, it updates `temp` to point to this child, effectively moving left down the tree.
+//      - If there is no left child (`temp->left == NULL`), it means the key cannot be present in the tree (since it would have to be in the left subtree of this node), so the function returns `0`.
+
+// 5. **Traverse Right**:
+//    - If `key > temp->data`, the function similarly checks if there is a right child:
+//      - If there is a right child, `temp` is updated to point to this child, moving right down the tree.
+//      - If there is no right child (`temp->right == NULL`), this also means the key is not present in the tree, and it returns `0`.
+
+// 6. **Key Found**:
+//    - If `key == temp->data`, the function finds that the current node holds the key value being searched for. Therefore, it returns `1`, indicating the key is found.
+
+// ### Key Points
+
+// - **Efficiency**: The time complexity of searching in a BST is O(h), where h is the height of the tree. In the best case (balanced tree), this is O(log n), and in the worst case (degenerated tree, similar to a linked list), it is O(n).
+// - **Unconditional Loop**: The use of `while (1)` is based on the assumption that the search will always conclude by either finding the node or reaching a leaf node (null child). It would be safer in practice to guard against possible errors by checking if `temp` itself is not null before trying to access `temp->data`.
+// - **Return Values**: The function uses integer return values (0 and 1) to indicate false and true conditions, which could also be implemented using a boolean type for clarity (`true` for found, `false` for not found).
+
+// This search method is fundamental for many operations in a BST, such as deletion, balancing operations, and data retrieval, providing a foundational mechanism for navigating and manipulating the tree based on ordered binary search properties.
+
+
+
+// Absolutely! Let's analyze each of the functions within your BST implementation.
+
+// **1. `BST::inorder(node *temp)`**
+
+// * **Purpose:** Performs an in-order traversal of the Binary Search Tree.
+// * **Mechanism:**
+//    * **Base Case:** `if(temp != NULL)`: If the current node is not empty... 
+//    * **Recursion:**
+//       * `inorder(temp->left)`: Traverse the left subtree recursively.
+//       * `cout << temp->data << " ";`: Print the value of the current node.
+//       * `inorder(temp->right)`: Traverse the right subtree recursively.
+
+// **2. `BST::largest()`**
+
+// * **Purpose:** Finds the node with the largest value in the BST.
+// * **Mechanism:**
+//     * **Initialization:** `temp = root`: Start from the root node.
+//     * **Traversal:** `while (temp->right != NULL) { temp = temp->right;}` : In a BST, the largest value is always in the rightmost node. So, traverse down the rightmost path until you find a node with no right child.
+//     * **Output:**  `cout << temp->data;` : Print the value of this rightmost node.
+
+// **3. `BST::smallest()`**
+
+// * **Purpose:** Finds the node with the smallest value in the BST.
+// * **Mechanism:**
+//     * **Initialization:** `temp = root`: Start from the root node.
+//     * **Traversal:** `while (temp->left != NULL) { temp = temp->left;}` :  In a BST, the smallest value is in the leftmost node. So, traverse down the leftmost path until you find a node with no left child.
+//     * **Output:**  `cout << temp->data;` : Print the value of this leftmost node.
+
+// **4. `BST::mirror(node *r)`** 
+
+// * **Purpose:** Creates the mirror image of the BST. (Left and right subtrees are swapped for each node.)
+// * **Mechanism:**
+//     * **Base Case:** `if (r != NULL)`: If the current node is not empty...
+//     * **Swapping:**  
+//        * `temp = r->left; r->left = r->right; r->right = temp;`: Swap the left and right subtrees of the current node.
+//     * **Recursion:** `mirror(r->left); mirror(r->right);` : Recursively mirror the left and right subtrees. 
+
+// **5. `BST::height(node *r)`**
+
+// * **Purpose:**  Calculates the height of the BST (or a subtree). The height is the number of edges along the longest path from the root to a leaf node.
+// * **Mechanism:**
+//     * **Base Case 1:**  `if (r == NULL) return 0;` : If the current node is empty, the height is 0. 
+//     * **Base Case 2:** `if (r->left == NULL && r->right == NULL) return 0;` : If the node is a leaf (no children), the height is 0.
+//     * **Recursion:**
+//       * `left_height = height(r->left);` : Calculate the height of the left subtree.
+//       * `right_height = height(r->right);` : Calculate the height of the right subtree.
+//     * **Height Calculation:**  Compares the heights of the left and right subtrees, and  returns 1 plus the height of the taller subtree.
+
+// **Feel free to ask if you'd like a more detailed explanation of a specific function or want to explore how these functions work together within the larger BST context!** 

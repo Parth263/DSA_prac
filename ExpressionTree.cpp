@@ -193,7 +193,58 @@ Prefix expression is:  + + - a b * c + e f / a b
  deleting node b
  deleting node /
  deleting node +
+
  */
+
+
+// Let's break down the concept of expression trees:
+
+// **What is an Expression Tree?**
+
+// * **Tree Representation:** An expression tree is a special type of binary tree used to represent mathematical or logical expressions.
+// * **Nodes:**  The tree has two types of nodes:
+//     * **Operator Nodes:**  Internal nodes of the tree representing operators such as +, -, *, /, %, etc.
+//     * **Operand Nodes:** Leaf nodes of the tree representing values (numbers or variables).
+
+// **Structure**
+
+// * **Priority:** Operators deeper in the tree typically have lower precedence than operators higher up.
+// * **Sub-expressions:** Each subtree represents a sub-expression within the larger expression.
+
+// **Example**
+
+// Consider the expression: `(5 + 8) * 3`
+
+// Its expression tree would look like this:
+
+// ```
+//         *
+//        / \
+//       +   3
+//      / \
+//     5   8 
+// ```
+
+// **How Are They Constructed?**
+
+// Expression trees are often built using the following concepts:
+
+// * **Infix, Prefix, and Postfix Notations:** An expression tree can be constructed from any of these notations that describe the order in which to apply operators.
+// * **Stacks and Parsing:** Stacks can be used to parse expressions and build the tree accordingly.
+
+// **Why Use Expression Trees?**
+
+// * **Evaluation:**  Expression trees provide a structured format for evaluating expressions. You can evaluate the value of the expression by traversing the tree (often in post-order).
+// * **Translation:** Expression trees help in translating expressions between different notations (like from infix to postfix).
+// * **Optimization:** Compilers can analyze expression trees to optimize how expressions are evaluated by the computer.
+
+// **Applications**
+
+// * **Compilers and Interpreters:**  Building and evaluating expressions.
+// * **Formula Editors:**  Representing and manipulating mathematical formulas in spreadsheets or other applications. 
+// * **Symbolic Mathematics:** In symbolic computation systems.
+
+// **Let me know if you'd like to delve into the construction of expression trees or a specific application in more detail!** 
 
 // This C++ program defines and manipulates an expression tree from a given prefix (Polish notation) expression. The program consists of several classes and functions designed to construct the tree, traverse it in different orders (prefix, infix, and postfix), and finally delete it. Let's walk through the code step-by-step:
 
