@@ -361,116 +361,98 @@ Element 6 found in the set at 0
 9: Exit
 Enter your choice:-*/
 
-// This C++ program defines a simple set manipulation system using the `Set` class to manage elements within the set. It allows various operations on sets such as adding elements, displaying them, removing elements, searching for elements, and performing set operations like union, intersection, difference, and subset determination. The operations are made interactive through a menu-driven interface. Here's a detailed breakdown of the code:
 
-// ### Class Definition
-// ```cpp
-// class Set
-// {
-//     int set[20], n;  // 'set' is an array to store the elements of the set, 'n' keeps track of the number of elements
 
-// public:
-//     Set();  // Constructor to initialize the set
-//     void add();  // Adds a new element to the set
-//     void display();  // Displays all elements in the set
-//     void remove(int x);  // Removes a specific element from the set
-//     int search(int x);  // Searches for an element in the set and returns its position
-//     void set_union(Set &s1, Set &s2);  // Computes the union of two sets
-//     void set_intersection(Set &s1, Set &s2);  // Computes the intersection of two sets
-//     void set_difference(Set &s1, Set &s2);  // Computes the difference of two sets
-//     void set_subset(Set &s1, Set &s2);  // Determines if one set is a subset of another
-// };
-// ```
-// The class `Set` encapsulates all functionalities needed to manage a set of integers.
+// This C++ code implements a basic set data structure using arrays. It allows users to perform various set operations such as adding elements, removing elements, checking for subsets, finding the union, intersection, and difference of sets, and searching for elements within sets. Let's break down the code into its key components and operations:
 
-// ### Constructor
-// ```cpp
-// Set() { n = 0; }
-// ```
-// The constructor initializes the set with zero elements.
+// 1. **Class Set**:
+//    - `int set[20]`: Array to store the elements of the set. The maximum size of the set is 20.
+//    - `int n`: Variable to keep track of the number of elements in the set.
+//    - Constructor `Set()`: Initializes the number of elements `n` to 0.
+//    - Functions:
+//      - `void add()`: Adds an element to the set.
+//      - `void display()`: Displays the elements of the set.
+//      - `void remove(int x)`: Removes an element from the set.
+//      - `int search(int x)`: Searches for an element in the set.
+//      - `void set_union(Set &s1, Set &s2)`: Computes the union of two sets.
+//      - `void set_intersection(Set &s1, Set &s2)`: Computes the intersection of two sets.
+//      - `void set_difference(Set &s1, Set &s2)`: Computes the difference of two sets.
+//      - `void set_subset(Set &s1, Set &s2)`: Checks if a set is a subset of another set.
 
-// ### Methods
-// #### `add()`
-// ```cpp
-// void Set::add()
-// {
-//     cout << "\n Enter the " << n << " element:-";
-//     cin >> set[n];
-//     n++;
-// }
-// ```
-// This method prompts the user to enter a new element, which it adds to the set.
+// 2. **add() Function**:
+//    - Prompts the user to enter an element and adds it to the set.
 
-// #### `display()`
-// ```cpp
-// void Set::display()
-// {
-//     if (n != 0)
-//     {
-//         for (int i = 0; i < n; i++)
-//         {
-//             cout << "\t" << set[i];
-//         }
-//         cout << "\n";
-//     }
-//     else
-//         cout << "\n Set is empty";
-// }
-// ```
-// Displays all elements in the set, or indicates if the set is empty.
+// 3. **display() Function**:
+//    - Displays all the elements of the set.
 
-// #### `remove(int x)`
-// ```cpp
-// void Set::remove(int x)
-// {
-//     int ele = search(x);  // Uses the search method to find the element
-//     if (ele != -1)  // If the element is found, it removes it by shifting elements
-//     {
-//         for (int j = ele; j < n - 1; j++)
-//         {
-//             set[j] = set[j + 1];
-//         }
-//         n--;
-//         cout << "\nElement " << x << " removed successfully.";
-//     }
-//     else
-//     {
-//         cout << "\nElement not found in the set.";
-//     }
-// }
-// ```
-// Removes a specific element from the set if found.
+// 4. **remove(int x) Function**:
+//    - Removes the element `x` from the set if it exists.
 
-// #### `search(int x)`
-// ```cpp
-// int Set::search(int x)
-// {
-//     for (int i = 0; i < n; i++)
-//     {
-//         if (x == set[i])
-//             return i;  // Returns the index of the element if found
-//     }
-//     return -1;  // Returns -1 if the element is not found
-// }
-// ```
-// Searches for an element in the set and returns its position or `-1` if not found.
+// 5. **search(int x) Function**:
+//    - Searches for the element `x` in the set and returns its index if found, otherwise returns -1.
 
-// #### Set Operations (`union`, `intersection`, `difference`, `subset`)
-// These methods implement basic set theory operations:
-// - **Union**: Combines elements of two sets without duplicates.
-// - **Intersection**: Finds common elements between two sets.
-// - **Difference**: Elements in one set that are not in another.
-// - **Subset**: Determines if all elements of one set are contained in another.
+// 6. **set_union(Set &s1, Set &s2) Function**:
+//    - Computes the union of two sets `s1` and `s2` and stores the result in the current set.
 
-// ### Main Function
-// ```cpp
-// int main()
-// {
-//     // Initialization of sets and choice variable
-//     // Interactive menu-driven logic to call various methods based on user input
-//     // Handles user interactions for all set operations
-// }
-// ```
-// The main function is designed to handle user interactions through a console menu. It allows users to manipulate sets by adding and removing elements, displaying contents, and performing set operations. Users can choose which set to operate on and select the specific operation they want to perform.
+// 7. **set_intersection(Set &s1, Set &s2) Function**:
+//    - Computes the intersection of two sets `s1` and `s2` and stores the result in the current set.
 
-// This structure provides a practical example of set operations using basic array manipulation in C++. It is a good demonstration of class-based design for managing collections and their operations in C++.
+// 8. **set_difference(Set &s1, Set &s2) Function**:
+//    - Computes the difference between two sets `s1` and `s2` (i.e., elements present in `s1` but not in `s2`) and stores the result in the current set.
+
+// 9. **set_subset(Set &s1, Set &s2) Function**:
+//    - Checks if set `s1` is a subset of set `s2` or vice versa, and if so, displays the subset.
+
+// 10. **main() Function**:
+//     - Creates instances of `Set` class for two sets (`s1` and `s2`) and a result set (`s3`).
+//     - Displays a menu for the user to choose various set operations.
+//     - Uses a `do-while` loop to repeatedly display the menu and perform operations until the user chooses to exit (`ch = 9`).
+
+// Overall, this code provides a basic implementation of set operations using arrays. However, it has limitations such as fixed size (maximum 20 elements) and may not be efficient for large sets.
+
+// Certainly! Here's a detailed explanation of each operation:
+
+// 1. **Enter an Element**:
+//    - This operation allows the user to add an element to one of the sets (`s1` or `s2`).
+//    - The user is prompted to choose the set (A or B) and then enter the element to be added.
+//    - The `add()` method of the `Set` class is called to add the element to the selected set.
+
+// 2. **Display Elements**:
+//    - This operation allows the user to display the elements of one of the sets (`s1` or `s2`).
+//    - The user is prompted to choose the set (A or B) whose elements should be displayed.
+//    - The `display()` method of the `Set` class is called to display the elements of the selected set.
+
+// 3. **Remove an Element**:
+//    - This operation allows the user to remove an element from one of the sets (`s1` or `s2`).
+//    - The user is prompted to choose the set (A or B) from which the element should be removed, and then enter the element to be removed.
+//    - The `remove(int x)` method of the `Set` class is called to remove the element from the selected set.
+
+// 4. **Search for an Element**:
+//    - This operation allows the user to search for an element in one of the sets (`s1` or `s2`).
+//    - The user is prompted to choose the set (A or B) in which to search for the element, and then enter the element to be searched.
+//    - The `search(int x)` method of the `Set` class is called to search for the element in the selected set. If the element is found, its index is displayed; otherwise, a message indicating that the element was not found is displayed.
+
+// 5. **Union of Set**:
+//    - This operation computes the union of the two sets (`s1` and `s2`) and stores the result in the third set `s3`.
+//    - The `set_union(Set &s1, Set &s2)` method of the `Set` class is called to compute the union of `s1` and `s2`, and the result is stored in `s3`.
+//    - The union of two sets contains all the distinct elements from both sets.
+
+// 6. **Intersection of Set**:
+//    - This operation computes the intersection of the two sets (`s1` and `s2`) and stores the result in the third set `s3`.
+//    - The `set_intersection(Set &s1, Set &s2)` method of the `Set` class is called to compute the intersection of `s1` and `s2`, and the result is stored in `s3`.
+//    - The intersection of two sets contains only the elements that are common to both sets.
+
+// 7. **Difference of Set**:
+//    - This operation computes the difference between the two sets (`s1` and `s2`) and stores the result in the third set `s3`.
+//    - The `set_difference(Set &s1, Set &s2)` method of the `Set` class is called to compute the difference between `s1` and `s2`, and the result is stored in `s3`.
+//    - The difference of two sets contains the elements that are present in `s1` but not in `s2` (or vice versa).
+
+// 8. **Subset of Set**:
+//    - This operation checks if one set (`s1`) is a subset of another set (`s2`) and displays the result.
+//    - The `set_subset(Set &s1, Set &s2)` method of the `Set` class is called to check if `s1` is a subset of `s2`.
+//    - If `s1` is a subset of `s2`, the method displays the subset; otherwise, it displays a message indicating that no subset was found.
+
+// 9. **Exit**:
+//    - This operation allows the user to exit the program. Once selected, the program terminates.
+
+// These operations provide a basic set of functionalities for managing sets, including adding, removing, displaying elements, and performing set operations such as union, intersection, difference, and subset checking.

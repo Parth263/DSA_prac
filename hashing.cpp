@@ -1,205 +1,321 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-class Hashtable {
-	public :
-	  int key;
-	  int mob_number;
+class HashTable
+{
+    public:
+        int index;
+        long int mobile;
 };
 
-class Hashing {
-	Hashtable t[10];
-	public : 
-		Hashing() {
-			for( int i = 0; i < 10; i++ ) {
-           t[i].key = i;
-		   t[i].mob_number = -1;
-		};
+class Hashing
+{
+    HashTable h[10];
+    public:
+        Hashing()
+        {
+            for(int i=0;i<10;i++)
+            {
+                h[i].index=i;
+                h[i].mobile=-1;
+            }
+        }
 
-	};
-
-	void insert();
-	void Display();
+        void display();
+        void insert(int);
+        void search();
+        int LinearProbing(int);
+        int QuadraticProbing(long int);
 
 };
 
-int main() {
-   Hashing h;
-   int choice;
-   do {
-	cout << "\n1. Insert" << endl;
-	cout << "\n2. Insert" << endl;
-	cout << "\n. Choose the option" << endl;
-	cin >> choice;
+int Hashing::QuadraticProbing(long int key)
+{
+    int a;
 
-	switch(choice) {
-		case 1 :
-		 h.insert();
-		 break;
-		case 2 : 
-		 h.Display();
-		 break;
-		 default :
-		 cout << "\nInvalid choice" << endl;
+    for(int j=0;j<10;j++)
+    {
+        a=  (key + (j*j))%10;
+        if(h[a].mobile==-1)
+        {
+            return a;
+        }
     }
 
-	} while (choice == 1 || choice == 2);
- return 0;
-   } 
+    return -1; // Ensure a value is returned in all control paths
+}
+
+int Hashing::LinearProbing(int collision_position)
+{
+    for(int i=collision_position;i<10;i++)
+    {
+        if(h[i].mobile==-1)
+            return i;
+
+        if(i==9)
+            return -1; // Ensure a value is returned in all control paths
+    }
+
+    return -1; // Ensure a value is returned in all control paths
+}
+
+void Hashing::display()
+{
+    for(int i=0;i<10;i++)
+    {
+        cout<<h[i].index;
+        cout<<"  "<<h[i].mobile;
+        cout<<endl;
+    }
+}
+
+void Hashing::insert(int probchoice)
+{   
+    long int key;
+    int position;
+    cout<<"\nEnter mobile number to insert in to hash table : ";
+    cin>>key;
+    position = key % 10;
+
+    cout<<"\nPosition = "<<position;
+
+    if(h[position].mobile==-1)
+    {
+        h[position].mobile=key;
+    }
+    else if(probchoice ==1)// Linear Probing collision.
+    {
+        int temp_position;
+        temp_position = LinearProbing(position);
+        h[temp_position].mobile=key;
+    }
+    else if(probchoice ==2)// Quadratic Probing for collision.
+    {
+        int temp_position;
+        temp_position = QuadraticProbing(key);
+        h[temp_position].mobile=key;
+    }
+
+}
+
+void Hashing::search()
+{   
+    long int key;
+    int position,i;
+    cout<<"\nEnter mobile number to search in the hash table : ";
+    cin>>key;
+    position = key % 10;
+    
+    if(h[position].mobile==key)
+    {
+        cout<<"\nGiven mobile number is found in the hash table ";
+    }
+    else
+    {
+        for(i = 0; i<10;i++)
+        {
+            if(h[i].mobile==key)
+            {
+                cout<<"\nGiven mobile number is found in the hash table  ";
+                break;
+            }
+        }
+        if(i == 10)
+        {
+            cout<<"\nGiven mobile number is not found in the hash table ";
+        }
+    }
+}
+
+int main()
+{
+    Hashing H;
+    int ch;
+
+    do
+    {
+        cout<<"\n Menu";
+        cout<<"\n 1.insert";
+        cout<<"\n 2.display";
+        cout<<"\n 3.search";
+        cout<<"\n 5. exit";
+        cout<<"\n Enter your choice : ";
+        cin>>ch;
+        switch(ch)
+        {
+            case 1 : //insert
+                int probchoice;
+                cout<<"\nEnter \n1 for LinearProbing and \n2 for Quadratic probing";
+                cin>>probchoice;
+                H.insert(probchoice);
+            break;
+            case 2 : //display
+                H.display();
+            break;
+        
+            case 3 : //display
+                H.search();
+            break;
+        
+            default:
+                cout<<"\nWrong choice :";
+            break;
+        }
+        
+    }while(ch != 5);
+    H.display();
+}
 
 
 
 
 
-// Absolutely, we'll start by building the program step by step. Let's begin with the foundational structure.
 
-// ### Step 1: Setting Up the Basic Structure
 
-// We'll start by setting up the basic structure of your C++ program. This includes including necessary headers, declaring the main function, and defining the basic classes we'll use for the hash table. Here’s how to begin:
 
-// #### 1.1 Include Headers
-// First, include the necessary header for input and output operations.
 
-// ```cpp
-// #include <iostream>
-// ```
 
-// #### 1.2 Use Namespace
-// To avoid prefixing `std::` before every standard library object or function, we use the entire standard namespace.
 
-// ```cpp
-// using namespace std;
-// ```
 
-// #### 1.3 Define the `Hashtable` Class
-// Define a class `Hashtable` that will store individual entries of the hash table. Each entry has a key and a mobile number.
+// **What is Hashing?**
 
-// ```cpp
-// class Hashtable {
-// public:
-//     int key;  // This will store the index in the hash table
-//     long int mob_number;  // This will store the mobile number
-// };
-// ```
+// - **Core Idea:** Hashing is a technique used to map data of varying sizes to fixed-size values. These fixed-size values are called "hash values," "hash codes," or simply "hashes."
+// - **Key Components:**
+//     1. **Key:** This is the data item you want to store or look up (e.g., a client's name in your telephone book example).
+//     2. **Hash Function:** A mathematical function that takes the key as input and computes the hash value (the index where the data might be stored).
+//     3. **Hash Table:** An array-like data structure where the computed hash values serve as indices for storing or retrieving data.
 
-// #### 1.4 Define the `Hashing` Class
-// Create a class `Hashing` that contains an array of `Hashtable` objects. This class will manage the hash table operations such as insertion and display.
+// **Why Do We Use Hashing?**
 
-// ```cpp
-// class Hashing {
-//     Hashtable t[10];  // Array of Hashtable objects, fixed size of 10
-// public:
-//     Hashing() {
-//         for (int i = 0; i < 10; i++) {
-//             t[i].key = i;  // Initialize keys as indices
-//             t[i].mob_number = -1;  // -1 indicates an empty slot
-//         }
-//     }
-//     void insert();  // Function to insert a new mobile number
-//     void display();  // Function to display the hash table
-// };
-// ```
+// - **Speed:** Hashing aims to provide near-constant time complexity (O(1) on average) for data lookup, insertion, and deletion. This makes it extremely efficient, especially when dealing with large datasets.
+// - **Data Organization:** Hashing helps organize data in a way that makes finding specific items very fast. Think of it like a super-efficient index system in a library.
 
-// #### 1.5 Start the `main` Function
-// Setup the `main` function that provides the basic user interface for interaction.
+// **How It Works (Simplified Example)**
 
-// ```cpp
-// int main() {
-//     Hashing h;  // Create an object of Hashing
-//     int choice;  // To store the user's menu choice
-//     do {
-//         cout << "\n1. Insert";
-//         cout << "\n2. Display";
-//         cout << "\n Enter a choice: ";
-//         cin >> choice;  // Get user's choice
+// 1. **Hash Function:** Let's say our hash function is "modulus 10" (for simplicity). If the key is "John Smith," we might treat the letters as numbers and add them up, then take the remainder after dividing by 10. This remainder becomes the hash value.
+// 2. **Hash Table:** Our hash table has 10 slots (indices 0-9). The hash value we calculated determines where we might store or find the data associated with the key "John Smith."
 
-//         switch (choice) {
-//             case 1:
-//                 h.insert();
-//                 break;
-//             case 2:
-//                 h.display();
-//                 break;
-//             default:
-//                 cout << "\nInvalid choice";
-//         }
-//     } while (choice == 1 || choice == 2);
+// **Real-World Applications**
 
-//     return 0;
-// }
-// ```
+// - **Databases:** Hashing is used extensively for indexing in databases to speed up searches.
+// - **Password Storage:** Passwords are not stored directly; instead, their hashes are stored for security reasons.
+// - **Caching:** Caches use hashing techniques for quick data retrieval.
+// - **Data Integrity:** Hashing is used to generate checksums to detect file corruption or tampering.
 
-// This sets up the fundamental structure of your program. The `main` function initializes a `Hashing` object and provides a menu to insert a mobile number or display the hash table. The `do-while` loop continues to show the menu until the user enters a choice other than 1 or 2, effectively quitting the program.
+// **Let me know if you would like a more elaborate example, or discuss the importance of good hash functions!**
 
-// Let's pause here. Review the structure and let me know how it looks or if you have any modifications before we proceed to implement the `insert` and `display` methods.
+// Let's dive into the details of Linear Probing, Quadratic Probing, and Double Hashing, specifically for collision handling in hash tables, and analyze their strengths and weaknesses:
 
-// Great! Now that we have the basic structure set up, let's proceed to implement the `insert` and `display` methods of the `Hashing` class.
+// **Linear Probing**
 
-// ### Step 2: Implementing the `insert` Method
+// - **Mechanics:** When a collision occurs, you sequentially examine the next slot, then the next, and so on until you find an empty slot to insert the element. If you reach the end of the table, you often wrap around to the beginning.
+// - **Clustering:** The biggest issue is **primary clustering**. Consecutive occupied slots get longer and longer, making collisions more likely in those regions. This leads to longer search times, as you might need to traverse many filled slots to find your target.
+// - **Example:** Let's say your ideal hash value (index) is 5:
+//     - Collision at 5!
+//     - Check 6... occupied.
+//     - Check 7... occupied.
+//     - Check 8... empty! You insert the element here.
 
-// The `insert` method will be responsible for adding a new mobile number to the hash table. We will also handle collisions using linear probing.
+// **Pros of Linear Probing:**
 
-// #### 2.1 Implementing the `insert` Function
+// - **Simplicity:** Very easy to understand and implement.
+// - **Cache Performance:** Good for cache memory due to locality of reference (accessing data in neighboring locations).
 
-// Here's how you can write the `insert` function:
+// **Cons of Linear Probing:**
 
-// ```cpp
-// void Hashing::insert() {
-//     long int temp_num;
-//     cout << "\nEnter your mobile number: ";
-//     cin >> temp_num;  // User inputs the mobile number
+// - **Clustering:** High susceptibility to primary clustering degrades search performance.
 
-//     int position = temp_num % 10;  // Calculate hash position
+// **Quadratic Probing**
 
-//     if (t[position].mob_number == -1) {
-//         // If no collision, place the number at the computed position
-//         t[position].mob_number = temp_num;
-//     } else {
-//         // Collision handling using linear probing
-//         cout << "Collision occurred at position " << position << ". Trying to resolve...\n";
-//         int original_position = position;
-//         position = (position + 1) % 10;  // Move to the next slot
+// - **Mechanics:** Instead of a linear search, you use a quadratic function to determine the probe sequence. You jump further away with each probe (e.g., initially +1, then +4, +9, +16, etc.).
+// - **Reduced Clustering:** Quadratic probing is less prone to primary clustering compared to linear probing, as it spreads out the probes.
+// - **Example:** Again, assume ideal hash value (index) is 5:
+//     - Collision at 5!
+//     - Check 6 (5 + 1)... occupied.
+//     - Check 9 (5 + 4)... occupied.
+//     - Check 14 (5 + 9)... empty! You insert the element here.
 
-//         while (position != original_position && t[position].mob_number != -1) {
-//             // Keep moving until we find an empty slot or return to the start
-//             position = (position + 1) % 10;
-//         }
+// **Pros of Quadratic Probing:**
 
-//         if (position == original_position) {
-//             cout << "\nHash table is full";
-//         } else {
-//             t[position].mob_number = temp_num;
-//             cout << "Placed at position " << position << "\n";
-//         }
-//     }
-// }
-// ```
+// - **Reduces Primary Clustering:** Better distribution than linear probing.
 
-// #### Explanation
-// - **Hash Function**: The hash function here is `temp_num % 10`, which computes the index based on the last digit of the mobile number.
-// - **Collision Detection**: If the `mob_number` at the computed index is not `-1` (i.e., the slot is not empty), it means a collision has occurred.
-// - **Linear Probing**: The code then uses linear probing to find the next available slot. It moves to the next index and wraps around using modulo operation. If it circles back to the original position, it indicates that the hash table is full.
-// - **Collision Resolution Output**: Messages are printed to show where collisions occur and where the number is eventually placed.
+// **Cons of Quadratic Probing:**
 
-// ### Step 3: Implementing the `display` Method
+// - **Secondary Clustering:** Quadratic probing can still lead to mild clustering of another kind, though less severe than linear probing.
+// - **Calculation:** Slightly more compute overhead due to the quadratic calculation.
 
-// The `display` method will show the current content of the hash table.
+// **Double Hashing**
 
-// #### 3.1 Implementing the `display` Function
+// - **Mechanics:** You use a second hash function to calculate the probe offset when a collision occurs. This offset depends on the key itself.
+// - **Distribution:** Double hashing aims for the most even distribution of elements, significantly reducing clustering issues.
+// - **Example:** Ideal hash value is 5:
+//     - Collision at 5!
+//     - Second hash function gives offset of 3. Check 8...occupied.
+//     - Second hash function gives offset of 5. Check 10... empty! Insert here.
 
-// Here's the implementation:
+// **Pros of Double Hashing**
 
-// ```cpp
-// void Hashing::display() {
-//     cout << "Key\tMobile Number\n";
-//     for (int i = 0; i < 10; i++) {
-//         cout << i << "\t" << (t[i].mob_number == -1 ? "Empty" : to_string(t[i].mob_number)) << "\n";
-//     }
-// }
-// ```
+// - **Minimizes Clustering:** Best for avoiding both primary and secondary clustering.
+// - **Flexibility:** Gives control over the probe sequence.
 
-// #### Explanation
-// - **Output Format**: This method lists each index (key) with the corresponding mobile number or "Empty" if the slot is not filled (`mob_number` is `-1`).
-// - **Use of Ternary Operator**: The ternary operator is used to check if `mob_number` is `-1`, indicating an empty slot, otherwise, it prints the mobile number.
+// **Cons of Double Hashing:**
 
-// These methods complete the functionality for inserting and displaying data in the hash table. Let me know if this makes sense and if you're ready to discuss how to compile and test the program, or if there's anything else you'd like to add or modify!
+// - **Complexity:** Slightly more complex to implement due to the second hash function.
+// - **Hash Function Choice:** Performance depends heavily on selecting good hash functions.
+
+// **In Summary**
+
+// - **Clustering Avoidance:** Double Hashing > Quadratic Probing > Linear Probing
+// - **Simplicity:** Linear Probing > Quadratic Probing > Double Hashing
+
+// The best choice depends on your dataset and priorities. If minimizing clustering is paramount, double hashing is usually preferred.
+
+// Let me know if you'd like more illustrations or have any questions!
+
+// Absolutely! Let's break down your C++ hash table implementation step by step.
+
+// **Structure**
+
+// - **HashTable class:** A simple structure to hold the index (position in the hash table) and mobile number. This represents a single entry in the table.
+// - **Hashing class:** This is the core of the implementation. It stores your data, and contains functions for insertion, display, and searching, as well as handling collisions with linear and quadratic probing.
+
+// **Hashing Class Breakdown**
+
+// 1. **Constructor:**
+//     - You have an array `h` of 10 `HashTable` objects.
+//     - The constructor initializes each entry:
+//         - `index` is set to its position in the array for quick reference.
+//         - `mobile` is set to -1, indicating an empty slot.
+// 2. **display()**
+//     - Iterates over the hash table and prints the `index` and `mobile` number for each entry.
+// 3. **insert(int probchoice)**
+//     - **Input:** Asks the user for the mobile number to insert.
+//     - **Hash Calculation:** `position = key % 10`. The mobile number is used as the key, and a simple modulo 10 is your hash function.
+//     - **Check for Empty Slots:** If `h[position].mobile == -1`, the slot is empty, and the number is inserted directly.
+//     - **Collision Handling:** If there's a collision, you either call `LinearProbing` or `QuadraticProbing` based on the user's choice (`probchoice`).
+// 4. **LinearProbing(int collision_position)**
+//     - Begins searching for an empty slot sequentially from the point of collision (`collision_position`).
+//     - If an empty slot is found, the index is returned.
+//     - Returns -1 if the end of the table is reached without finding an empty slot.
+// 5. **QuadraticProbing(long int key)**
+//     - Implements the quadratic probing formula: `(key + (j*j)) % 10` to determine the offset from the collision point.
+//     - Searches for an empty slot using this offset.
+//     - Returns -1 if the table is full and no empty slot is found.
+// 6. **search()**
+//     - **Input:** Asks the user for the mobile number to search for.
+//     - **Hash Calculation:** `position = key % 10` calculates the initial hash position.
+//     - **Direct Check:** If the number is found at the initial position, it's reported as found.
+//     - **Iterative Search:** If not, it iterates over the table to check other potential locations determined by the probing strategy.
+
+// **Main Function**
+
+// - Creates a `Hashing` object.
+// - Provides a menu-driven interface for the user to interact with the hash table (insert, display, search, exit).
+
+// **Notes**
+
+// - **Hash Function:** Your hash function (`key % 10`) is quite simple. For larger datasets or more complex keys, you'd likely want a better function to distribute values more evenly.
+// - **Load Factor:** Your table has a fixed size of 10. As it fills up, collision resolution efficiency becomes very important.
+// - **Error Handling:** You might consider more robust error handling for when the table becomes full.
+
+// Let me know if you want to focus on optimizing a specific part of the code or explore alternative collision handling techniques!

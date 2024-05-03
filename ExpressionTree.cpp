@@ -28,17 +28,19 @@ public:
 			cout << "Stack is full...!";
 		}
 	}
-	node *pop()
-	{
-		if (!isempty())
-		{
-			return (a[top--]);
-		}
-		else
-		{
-			cout << "Stack is empty...!";
-		}
-	}
+	node* pop()
+{
+    if (!isempty())
+    {
+        return (a[top--]);
+    }
+    else
+    {
+        cout << "Stack is empty...!";
+        return NULL; // or throw an exception
+    }
+}
+
 
 	int isfull()
 	{
@@ -170,201 +172,122 @@ int main()
 	ext.del(ext.root);
 	cout << endl;
 }
-//OUTPUT
-/*Enter a Prefix expression:++-ab*c+ef/abc
-
-Prefix expression is:  + + - a b * c + e f / a b
-
- Infix expression is :a-b+c*e+f+a/b
-
- Postfix expression is :ab-cef+*+ab/+
-
- Deleted expression is :
- deleting node a
- deleting node b
- deleting node -
- deleting node c
- deleting node e
- deleting node f
- deleting node +
- deleting node *
- deleting node +
- deleting node a
- deleting node b
- deleting node /
- deleting node +
-
- */
 
 
-// Let's break down the concept of expression trees:
 
-// **What is an Expression Tree?**
 
-// * **Tree Representation:** An expression tree is a special type of binary tree used to represent mathematical or logical expressions.
-// * **Nodes:**  The tree has two types of nodes:
-//     * **Operator Nodes:**  Internal nodes of the tree representing operators such as +, -, *, /, %, etc.
-//     * **Operand Nodes:** Leaf nodes of the tree representing values (numbers or variables).
 
-// **Structure**
 
-// * **Priority:** Operators deeper in the tree typically have lower precedence than operators higher up.
-// * **Sub-expressions:** Each subtree represents a sub-expression within the larger expression.
 
-// **Example**
+// An expression tree is a binary tree used to represent expressions in a way that facilitates their evaluation. In an expression tree, each leaf node represents an operand (such as a variable or a constant), and each internal node represents an operator.
 
-// Consider the expression: `(5 + 8) * 3`
-
-// Its expression tree would look like this:
+// For example, consider the infix expression `(A + B) * (C - D)`. It can be represented by the following expression tree:
 
 // ```
 //         *
-//        / \
-//       +   3
-//      / \
-//     5   8 
+//        / \\
+//       +   -
+//      / \\ / \\
+//     A  B C  D
+
 // ```
 
-// **How Are They Constructed?**
+// ### Operations on Expression Trees:
 
-// Expression trees are often built using the following concepts:
+// 1. **Creating an Expression Tree from an Expression:**
+//     - To create an expression tree from an infix expression, we can use the following steps:
+//         1. Convert the infix expression to a postfix expression.
+//         2. Use a stack to build the expression tree from the postfix expression.
+//     - For example, the infix expression `(A + B) * (C - D)` can be converted to the postfix expression `A B + C D - *`, which can then be used to create the expression tree.
+// 2. **Traversal of Expression Tree:**
+//     - There are three common ways to traverse an expression tree:
+//         1. **Pre-order traversal:** Visit the root node first, then recursively do a pre-order traversal of the left subtree, followed by a pre-order traversal of the right subtree.
+//         2. **In-order traversal:** Recursively do an in-order traversal of the left subtree, visit the root node, and then do an in-order traversal of the right subtree. In an expression tree, this gives the infix notation of the expression.
+//         3. **Post-order traversal:** Recursively do a post-order traversal of the left subtree, followed by a post-order traversal of the right subtree, and then visit the root node. In an expression tree, this gives the postfix notation of the expression.
+// 3. **Evaluating an Expression Tree:**
+//     - To evaluate an expression tree, we can use a recursive approach:
+//         1. If the current node is a leaf node (operand), return its value.
+//         2. Otherwise, evaluate the left and right subtrees recursively and apply the operator at the current node to the results.
+// 4. **Deleting an Expression Tree:**
+//     - To delete an expression tree, we can use a post-order traversal:
+//         1. Recursively delete the left subtree.
+//         2. Recursively delete the right subtree.
+//         3. Delete the current node.
 
-// * **Infix, Prefix, and Postfix Notations:** An expression tree can be constructed from any of these notations that describe the order in which to apply operators.
-// * **Stacks and Parsing:** Stacks can be used to parse expressions and build the tree accordingly.
+// ### Example:
 
-// **Why Use Expression Trees?**
+// Consider the infix expression `((A+B)*C)-(D/E)`.
 
-// * **Evaluation:**  Expression trees provide a structured format for evaluating expressions. You can evaluate the value of the expression by traversing the tree (often in post-order).
-// * **Translation:** Expression trees help in translating expressions between different notations (like from infix to postfix).
-// * **Optimization:** Compilers can analyze expression trees to optimize how expressions are evaluated by the computer.
+// 1. **Conversion to Postfix:**
+//     - The postfix expression is `AB+C*DE/-`.
+// 2. **Expression Tree:**
+//     - The expression tree for the postfix expression is:
 
-// **Applications**
-
-// * **Compilers and Interpreters:**  Building and evaluating expressions.
-// * **Formula Editors:**  Representing and manipulating mathematical formulas in spreadsheets or other applications. 
-// * **Symbolic Mathematics:** In symbolic computation systems.
-
-// **Let me know if you'd like to delve into the construction of expression trees or a specific application in more detail!** 
-
-// This C++ program defines and manipulates an expression tree from a given prefix (Polish notation) expression. The program consists of several classes and functions designed to construct the tree, traverse it in different orders (prefix, infix, and postfix), and finally delete it. Let's walk through the code step-by-step:
-
-// ### Class Definitions
-
-// #### 1. `node`
-// ```cpp
-// class node
-// {
-// public:
-//     char data;     // Character to hold the data (operator or operand)
-//     node *left;    // Pointer to the left child
-//     node *right;   // Pointer to the right child
-// };
 // ```
-// This class represents a single node in the expression tree, which can store a character and has pointers to its left and right children.
+//         -
+//        / \\
+//       *   /
+//      / \\ / \\
+//     +   C  E
+//    / \\
+//   A   B
 
-// #### 2. `stack`
-// ```cpp
-// class stack
-// {
-// public:
-//     int top;       // Index of the top element in the stack
-//     node *a[20];   // Array of pointers to nodes, representing the stack
-//     stack();       // Constructor to initialize the stack
-//     void push(node *temp);  // Method to push a node pointer onto the stack
-//     node *pop();            // Method to pop a node pointer from the stack
-//     int isfull();           // Check if the stack is full
-//     int isempty();          // Check if the stack is empty
-// };
 // ```
-// This class manages a stack of node pointers, which is used in the creation of the expression tree. It provides methods for pushing and popping node pointers, as well as checking if the stack is full or empty.
 
-// #### 3. `Exp_Tree`
-// ```cpp
-// class Exp_Tree
-// {
-// public:
-//     node *root;    // Pointer to the root of the expression tree
-//     Exp_Tree();    // Constructor to initialize the expression tree
-//     void create_exp_tree(); // Creates an expression tree from a prefix expression
-//     void infix(node *temp); // In-order traversal of the tree
-//     void prefix(node *temp); // Pre-order traversal of the tree
-//     void postfix(node *temp); // Post-order traversal of the tree
-//     void del(node *temp);    // Deletes all nodes in the tree
-// };
+// 1. **Traversal:**
+//     - Pre-order traversal: `*+ABC/DE`
+//     - In-order traversal: `A+B*C-D/E`
+//     - Post-order traversal: `AB+C*DE/-`
+// 2. **Evaluation:**
+//     - If A=2, B=3, C=4, D=5, E=6:
+//         - ((2+3)*4)-(5/6) = (5*4) - (5/6) = 20 - 0.8333 = 19.1667
+// 3. **Deletion:**
+//     - Delete the expression tree nodes in a post-order manner.
+
+// Expression trees are useful in compilers, where they are used to convert infix expressions to postfix or prefix forms, and in evaluating mathematical expressions efficiently.
+
+// This C++ code implements an expression tree using a stack data structure. It allows the user to enter a prefix expression, constructs an expression tree from it, and then performs pre-order, in-order, and post-order traversals of the tree.
+
+// Here's a detailed explanation of the code:
+
+// 1. **Node Class (`node`):**
+//     - Represents a node in the expression tree.
+//     - Contains a `char` data member to store the operator or operand.
+//     - Has `left` and `right` pointers to point to the left and right child nodes.
+// 2. **Stack Class (`stack`):**
+//     - Implements a stack data structure to store nodes of the expression tree.
+//     - Contains an array `a` to store nodes and a `top` variable to keep track of the top element.
+//     - Provides methods like `push` to push a node onto the stack, `pop` to pop a node from the stack, and `isfull` and `isempty` to check if the stack is full or empty.
+// 3. **Expression Tree Class (`Exp_Tree`):**
+//     - Manages the creation and traversal of the expression tree.
+//     - Contains a `root` pointer to the root of the expression tree.
+//     - Provides methods like `create_exp_tree` to create the expression tree from a given prefix expression, `prefix`, `infix`, and `postfix` to perform pre-order, in-order, and post-order traversal of the tree, and `del` to delete the expression tree.
+// 4. **Main Function:**
+//     - Creates an instance of the `Exp_Tree` class (`ext`).
+//     - Calls the `create_exp_tree` method to create the expression tree from a prefix expression entered by the user.
+//     - Prints the prefix, infix, and postfix expressions of the created tree using the `prefix`, `infix`, and `postfix` methods.
+//     - Deletes the expression tree using the `del` method.
+
+// **Step-by-Step Execution:**
+
+// 1. The user is prompted to enter a prefix expression.
+// 2. The code reads the prefix expression and creates an expression tree from it using a stack.
+// 3. It iterates through each character of the prefix expression from right to left:
+//     - If the character is an operand (A-Z or a-z), it creates a new node and pushes it onto the stack.
+//     - If the character is an operator, it pops two nodes from the stack, sets them as the left and right children of the new node, and pushes the new node back onto the stack.
+// 4. After processing all characters, the root of the expression tree is the only node left in the stack.
+// 5. The code then performs pre-order, in-order, and post-order traversals of the expression tree and prints the corresponding expressions.
+// 6. Finally, it deletes the expression tree to free up memory.
+
+// **Example Output:**
+
 // ```
-// This class handles the expression tree. It includes methods for building the tree from a prefix expression, performing different tree traversals, and deleting the tree.
+// Enter a Prefix expression: *+AB-CD
+// Prefix expression is: * + A B - C D
+// Infix expression is: A + B * C - D
+// Postfix expression is: A B + C D - *
+// Deleted expression is: deleting node * deleting node + deleting node A deleting node B deleting node - deleting node C deleting node D
 
-// ### Methods Explanation
-
-// #### `create_exp_tree()`
-// ```cpp
-// void Exp_Tree::create_exp_tree()
-// {
-//     char ch;
-//     node *new_node, *temp;
-//     string str;
-//     int i;
-//     stack s;
-
-//     cout << "\nEnter a Prefix expression:";
-//     cin >> str;
-//     for (i = (str.length() - 1); i >= 0; i--)
-//     {
-//         ch = str[i];
-//         new_node = new node();
-//         new_node->data = ch;
-//         new_node->left = NULL;
-//         new_node->right = NULL;
-
-//         if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
-//         {
-//             s.push(new_node);
-//         }
-//         else
-//         {
-//             temp = s.pop();
-//             new_node->left = temp;
-//             temp = s.pop();
-//             new_node->right = temp;
-//             s.push(new_node);
-//         }
-//     }
-//     root = s.pop();
-// }
 // ```
-// This function builds an expression tree from a user-inputted prefix expression. It reads the expression from right to left, creating new nodes for each character. If the character is an operand, it is pushed onto the stack. If it is an operator, it pops two nodes from the stack, assigns them as children, and pushes the new sub-tree back onto the stack. The last node on the stack becomes the root of the tree.
 
-// #### Tree Traversal Methods (`prefix()`, `infix()`, `postfix()`)
-// These functions recursively traverse the tree:
-// - **Prefix**: Visits the root first, then the left subtree, then the right subtree.
-// - **Infix**: Visits the left subtree first, then the root, then the right subtree.
-// - **Postfix**: Visits the left subtree first, then the right subtree, then the root.
-
-// #### `del()`
-// ```cpp
-// void Exp_Tree::del(node *temp)
-// {
-//     if (temp == NULL)
-//         return;
-//     {
-//         del(temp->left);
-//         del(temp->right);
-//         cout << "\n deleting node " << temp->data;
-//         delete (temp);
-//     }
-// }
-// ```
-// This function recursively deletes all nodes in the tree starting from the given node. It first deletes both children and then the node itself, displaying a message for each deletion.
-
-// ### Main Function
-// ```cpp
-// int main()
-// {
-//     Exp_Tree ext;
-//     ext.create_exp_tree();
-//     cout << "\nPrefix expression is: ";
-//     ext.prefix(ext.root);
-//     cout << endl;
-
-//     cout << "\n Infix expression is :";
-//     ext.infix(ext.root
+// This explanation provides a detailed understanding of how the code works and how it constructs and traverses an expression tree from a prefix expression.

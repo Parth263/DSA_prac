@@ -190,235 +190,78 @@ int main()
         }
     } while (choice != 4);
 }
-//OUTPUT
-/*1.Insert element 
-2.inorder display of threaded binary tree
-3.preorder display of threded binary tree 
-4.Exit 
+// Let's dive deeper into the code, explaining each variable and its purpose:
 
-Enter your choice:1
-Enter root node: 5
-Enter the node value: 4
-Do you want to continue:y
-Enter the node value: 7
-Do you want to continue:y
-Enter the node value: 6
-Do you want to continue:n
+// 1. **Node Class (`node`):**
+//    - `int data`: Represents the value stored in the node.
+//    - `node *left, *right`: Pointers to the left and right child nodes.
+//    - `int lbit, rbit`: Flags indicating whether the left and right pointers are threads or actual child pointers. `lbit` and `rbit` are set to `0` for child pointers and `1` for threads.
 
-1.Insert element 
-2.inorder display of threaded binary tree
-3.preorder display of threded binary tree 
-4.Exit 
+// 2. **Threaded Binary Tree Class (`TBT`):**
+//    - `node *root`: Pointer to the root node of the binary tree.
+//    - `node *head`: Pointer to a special node called the head node, which is used as a sentinel for traversal.
 
-Enter your choice:2
-Inorder is:  4 5 6 7
-1.Insert element
-2.inorder display of threaded binary tree
-3.preorder display of threded binary tree
-4.Exit
+// 3. **`create_TBT()` Function:**
+//    - `int flag`: Flag variable used for iteration control.
+//    - `char ans`: Stores the user's choice to continue adding nodes.
+//    - `new_node`: Pointer to a newly created node.
+//    - `temp`: Temporary pointer used for traversal and insertion.
+//    - The function first creates the head node with a special value (`-999`) and initializes its pointers and flags.
+//    - It then creates the root node based on user input and initializes its pointers and flags.
+//    - Inside a do-while loop, it repeatedly creates new nodes, inserts them into the tree based on their values, and updates the tree's structure and thread flags accordingly.
+//    - The loop continues as long as the user chooses to add more nodes (`ans == 'Y' || ans == 'y'`).
 
-Enter your choice:3
-Preorder is:  5 4 7 6
-1.Insert element
-2.inorder display of threaded binary tree
-3.preorder display of threded binary tree
-4.Exit
+// 4. **`inorder()` Function:**
+//    - `temp`: Temporary pointer used for traversal.
+//    - `flag`: Flag variable used for controlling the traversal direction.
+//    - The function performs an inorder traversal of the tree, starting from the root.
+//    - It checks the `lbit` flag to decide whether to move to the left child or not.
+//    - If the `lbit` flag is `1`, it moves to the left child.
+//    - If the `lbit` flag is `0`, it prints the current node's value, moves to the right child if the `rbit` flag is `1`, and updates the `flag` accordingly.
 
-Enter your choice:4
-Exit*/
+// 5. **`preorder()` Function:**
+//    - `temp`: Temporary pointer used for traversal.
+//    - `flag`: Flag variable used for controlling the traversal direction.
+//    - Similar to the `inorder()` function, but it prints the current node's value before moving to its children.
+//    - The function checks the `flag` variable to determine whether to print the current node's value before moving to the left child or right child.
 
-// Absolutely! Let's revisit in-order, pre-order, and post-order tree traversals. Here's a breakdown of each, including their specific order and common use cases.
+// 6. **`main()` Function:**
+//    - `TBT t`: Creates an instance of the `TBT` class.
+//    - `int choice`: Stores the user's menu choice.
+//    - The function presents a menu to the user with options to insert elements, display inorder traversal, display preorder traversal, and exit the program.
+//    - It uses a do-while loop to repeatedly display the menu and process the user's choice until the user chooses to exit.
 
-// **Core Concept**
+// This code implements a threaded binary tree and provides functionality to create the tree, and traverse it in inorder and preorder. The use of threaded pointers (`lbit` and `rbit`) allows for efficient traversal without using recursion or an explicit stack.
 
-// These traversals are different ways to systematically visit all nodes in a tree. Their names refer to the order in which the **root node (N)** is visited relative to its **left (L)** and **right (R)** subtrees.
+// Certainly! Let's delve deeper into the concepts of Threaded Binary Trees (TBT) and their types, focusing on Inorder Threaded Binary Trees (ITBT) and Preorder Threaded Binary Trees (PTBT):
 
-// **1. In-Order Traversal (L, N, R)**
+// // **Threaded Binary Tree (TBT)**:
+// // A TBT is a binary tree where every node can have one or two additional threads (pointers) that facilitate traversal without using recursion or a stack. These threads are used to point to other nodes in a specific order, such as inorder or preorder. The primary purpose of using threads is to make traversal more efficient by eliminating the need for stack space or recursive calls.
 
-// * **Process:**
-//     1. Traverse the left subtree recursively.
-//     2. Visit the root node.
-//     3. Traverse the right subtree recursively.
+// **Types of TBT**:
+// 1. **Inorder Threaded Binary Tree (ITBT)**:
+//    - In an ITBT, each node's left thread points to its inorder predecessor, and the right thread points to its inorder successor.
+//    - The inorder predecessor of a node is the node that would appear immediately before it in an inorder traversal of the tree.
+//    - The inorder successor of a node is the node that would appear immediately after it in an inorder traversal.
 
-// * **Key Feature:** In a Binary Search Tree (BST), in-order traversal visits nodes in ascending order of their values.
+// 2. **Preorder Threaded Binary Tree (PTBT)**:
+//    - In a PTBT, each node's left thread points to its preorder predecessor, and the right thread points to its preorder successor.
+//    - The preorder predecessor of a node is the node that would appear immediately before it in a preorder traversal of the tree.
+//    - The preorder successor of a node is the node that would appear immediately after it in a preorder traversal.
 
-// * **Common Uses:**
-//     * Retrieve elements of a BST in sorted order.
-//     * Convert a BST into a doubly linked list.
+// **Traversal in TBT**:
+// 1. **Inorder Traversal**:
+//    - In an ITBT, we can perform an inorder traversal without recursion or a stack by following the threaded pointers.
+//    - We start from the leftmost node and follow the right thread to move to the next node in the inorder sequence.
+//    - This process continues until we reach the rightmost node, which will have its right thread pointing to the head node or null.
 
-// **2. Pre-Order Traversal (N, L, R)**
+// 2. **Preorder Traversal**:
+//    - In a PTBT, we can perform a preorder traversal without recursion or a stack by following the threaded pointers.
+//    - We start from the root node and move to its left child, printing each node's value along the way.
+//    - If a node has no left child, we follow its right thread to move to the next node in the preorder sequence.
 
-// * **Process:**
-//     1. Visit the root node.
-//     2. Traverse the left subtree recursively.
-//     3. Traverse the right subtree recursively.
+// **Advantages of TBT**:
+//    - Efficient traversal: TBT allows for efficient traversal of the tree without using recursion or a stack, reducing space complexity.
+//    - Simplified algorithms: Traversal and other operations become simpler and more intuitive with the use of threaded pointers.
 
-// * **Key Feature:** Pre-order traversal can help replicate or copy a tree.
-
-// * **Common Uses:**
-//     * Create a prefix expression from an expression tree.
-//     * Serialize a tree (convert it into a format for saving or transferring).
-
-// **3. Post-Order Traversal (L, R, N)**
-
-// * **Process:**
-//     1. Traverse the left subtree recursively.
-//     2. Traverse the right subtree recursively.
-//     3. Visit the root node.
-
-// * **Key Feature:** Post-order traversal is useful when you need to process child nodes before the parent.
-
-// * **Common Uses:**
-//     * Create a postfix expression from an expression tree.
-//     * Delete a tree (ensuring children are deleted before parents).
-
-// **Example**
-
-// Consider the following tree:
-
-// ```
-//         8
-//        / \
-//       3   10
-//      / \
-//     1   6
-// ```
-
-// * **In-order:** 1, 3, 6, 8, 10
-// * **Pre-order:** 8, 3, 1, 6, 10
-// * **Post-order:** 1, 6, 3, 10, 8
-
-// **Let me know if you'd like a code example demonstrating any of these traversals or have a specific application you'd like to discuss!** 
-
-
-// Absolutely! Let's delve into the concept of threaded binary trees.
-
-// **What is a Threaded Binary Tree?**
-
-// A threaded binary tree is a modification of the standard binary tree that aims to make tree traversals more efficient and to overcome some of the space wastage of regular binary trees. Here's how:
-
-// * **Null Pointers? Not Anymore!** Normally, in a binary tree, if a node doesn't have a left or right child, its corresponding pointer fields are set to NULL. Threaded binary trees utilize these NULL pointers to store additional information for easier traversal.
-
-// * **Threads:** A thread is a pointer that connects a node to its successor (for in-order traversal) or predecessor (for reverse in-order traversal), depending on the type of threading.
-
-// **Types of Threaded Binary Trees**
-
-// 1. **Single Threaded (Right Threaded):** 
-//    * If a node's right child is NULL, the right pointer instead points to the in-order successor of that node.
-
-// 2. **Double Threaded:**  
-//    * If a node's left child is NULL, the left pointer points to the in-order predecessor.
-//    * If the right child is NULL, it points to the in-order successor. 
-
-// **Structure Modification**
-
-// Along with the standard left and right child pointers, a node in a threaded binary tree includes a boolean flag to indicate whether a pointer is a normal child pointer or a thread:
-
-// ```c++
-// struct Node {
-//   int data;
-//   Node *left, *right;
-//   bool isThread; // true if the pointer is a thread, false otherwise
-// };
-// ```
-
-// **Advantages of Threaded Binary Trees**
-
-// * **Faster Traversal:** In-order traversal (and sometimes reverse in-order) can be done without the need for recursion or a stack, making traversals more time and space efficient.
-// * **Space Utilization:**  Threaded binary trees can slightly improve space usage by replacing some NULL pointers with useful information.
-
-// **Disadvantages**
-
-// * **Increased Complexity:** Implementation and code maintenance are more complex than in regular binary trees.
-// * **Limited Applicability:** The benefits are primarily seen in in-order traversals. Other types of traversals don't necessarily gain the same advantages.
-
-// **When Are They Used?**
-
-// Threaded binary trees are less common in modern use cases. They can be helpful in situations where:
-
-// * In-order traversals are extremely frequent.
-// * Memory is a major constraint.
-
-// **Let me know if you'd like to explore a specific type of threaded binary tree with an illustration or code example, or if you want to compare them to standard binary trees!**
-
-
-
-
-// This C++ program defines and manipulates a Threaded Binary Tree (TBT). A Threaded Binary Tree is a binary tree variant where `NULL` pointers are replaced with links to the in-order predecessor and successor nodes, which facilitates more efficient in-order traversal. The program uses a class structure to encapsulate the operations of the tree, including insertion and tree traversal (in-order and pre-order). Here is an explanation of the code:
-
-// ### Class Definitions
-
-// #### 1. `node`
-// ```cpp
-// class node
-// {
-// public:
-//     int data;       // Data part of the node (stores integer values)
-//     node *left;     // Pointer to the left child
-//     node *right;    // Pointer to the right child
-//     int lbit, rbit; // Left and right thread indicators (1 indicates a thread, 0 indicates a child)
-// };
-// ```
-// This class represents a node in the threaded binary tree. Each node contains data, pointers to its children, and flags (`lbit`, `rbit`) that indicate whether the pointers are pointing to children (`0`) or to in-order predecessors or successors (`1`).
-
-// #### 2. `TBT`
-// ```cpp
-// class TBT
-// {
-// public:
-//     node *root, *head, *temp, *new_node;
-//     TBT();          // Constructor that initializes the tree
-//     void preorder(); // Function to display the tree in preorder
-//     void inorder();  // Function to display the tree in inorder
-//     void create_TBT(); // Function to create the threaded binary tree
-// };
-// ```
-// This class manages the threaded binary tree. It includes the root and head pointers (the head acts as a dummy node to facilitate easier management of the tree edges), and methods for creating the tree and displaying its contents in order.
-
-// ### Methods Explanation
-
-// #### `create_TBT()`
-// ```cpp
-// void TBT::create_TBT()
-// {
-//     // Initialization and node creation logic
-//     // Loop to accept new nodes until user decides to stop
-//     // Nodes are linked as per the threaded binary tree rules
-// }
-// ```
-// This function initializes the tree, creates the head (dummy) node, and repeatedly accepts input from the user to add nodes to the tree. For each new node, it places it correctly in the tree based on its value and updates pointers and thread indicators according to the tree's structure.
-
-// #### `inorder()`
-// ```cpp
-// void TBT::inorder()
-// {
-//     // Logic to traverse the tree in in-order using threads
-//     // Handles the special cases when reaching end of threads
-// }
-// ```
-// This function performs an in-order traversal of the tree using threads instead of traditional recursive traversal, which is usually more efficient since it doesn't require stack or recursion.
-
-// #### `preorder()`
-// ```cpp
-// void TBT::preorder()
-// {
-//     // Logic to traverse the tree in pre-order using threads
-//     // Similar to in-order but visits nodes in "root-left-right" order
-// }
-// ```
-// This function traverses the tree in pre-order. While a fully threaded tree typically facilitates easy in-order traversal, this function is adjusted to follow the pre-order sequence using threads where possible.
-
-// ### Main Function
-// ```cpp
-// int main()
-// {
-//     // Menu-driven interaction to perform operations on the threaded binary tree
-//     // Users can insert nodes, perform in-order or pre-order traversal, or exit
-// }
-// ```
-// The `main()` function provides a user interface that allows inserting nodes into the tree, performing in-order and pre-order traversals, and exiting the program. It keeps running until the user chooses to exit.
-
-// ### Execution Flow
-// The program starts by creating an instance of the `TBT` class. It then presents a menu to the user to insert nodes, display the tree in order or pre-order, or exit. The user can insert multiple nodes to construct the tree as desired, then display the tree's contents in in-order or pre-order, verifying the tree structure through the traversals.
-
-// Overall, this program is a practical implementation of threaded binary trees, showcasing how they can be used to simplify in-order traversal without the need for stack or recursion, leveraging the threads to move efficiently between nodes.
+// In summary, TBTs are binary trees with additional threads that enable efficient traversal. ITBTs and PTBTs use different types of threads to store predecessor and successor nodes, facilitating different types of traversal algorithms.
