@@ -8,7 +8,7 @@ Title : You have a business with several offices; you want to lease phone lines 
 using namespace std;
 
 
-class snode
+class snode // edge in the graph
 { 
   public:        // data structure for sparse matrix.
    char u1,u2;
@@ -214,3 +214,49 @@ return 0;
 // 3. **Boruvka’s Algorithm**: Another efficient algorithm, especially useful in parallel computation for finding MSTs.
 
 // Each algorithm has its advantages depending on the graph's structure and the specific needs of the application, such as whether the graph is dense or sparse, or if the solution needs to be parallelized.
+
+
+// The code implements Prim's algorithm, a greedy approach to finding a Minimum Spanning Tree (MST) in a connected, weighted graph. Here's a breakdown of the theory behind it:
+
+// **Minimum Spanning Tree (MST)**
+
+// * A connected and acyclic (cycle-free) subgraph of a weighted graph.
+// * Spans all vertices of the original graph.
+// * The sum of the edge weights in the MST is the minimum possible compared to all other spanning trees of that graph.
+
+// **Prim's Algorithm**
+
+// Prim's algorithm is an iterative process that builds the MST one edge at a time. Here's a step-by-step explanation:
+
+// 1. **Initialization:** Choose any vertex in the graph as the starting point. Add it to the MST and mark it as visited.
+
+// 2. **Iteration:**
+//     * Among the **unvisited** vertices adjacent to the vertices in the current MST, find the edge with the **minimum weight**.
+//     * Add this edge and its **unvisited** endpoint vertex to the MST.
+//     * Mark the newly added vertex as visited.
+
+// 3. **Repeat Step 2** until all vertices are included in the MST.
+
+// **Greedy Choice**
+
+// Prim's algorithm makes a locally optimal choice at each step by picking the minimum weight edge that connects the growing MST to an unvisited vertex. This localized approach guarantees finding the global minimum spanning tree for the entire graph.
+
+// **Why it Works**
+
+// Prim's algorithm leverages a key property of MSTs:
+
+// * **Cut Property:** In any graph, for any cut (division into two sub-graphs) separating the MST from the rest of the graph, there must exist an edge in the MST that has a weight less than or equal to all other edges crossing the cut.
+
+// Using this property, Prim's algorithm ensures that at each step, the chosen edge has a weight no greater than any edge that could potentially connect the MST to an unvisited vertex later. This progressively builds a minimum weight spanning tree.
+
+// **Time Complexity**
+
+// The time complexity of Prim's algorithm using an adjacency matrix implementation is O(V^2), where V is the number of vertices. However, using a priority queue to efficiently find the minimum weight edge during each iteration can improve the complexity to O(E log V), where E is the number of edges.
+
+// **Applications of MSTs**
+
+// * **Networking:**  Designing a cost-effective communication network between cities.
+// * **Image Segmentation:** Grouping connected pixels in an image to identify objects.
+// * **Cluster Analysis:** Grouping data points based on similarity measures.
+
+// **Let me know if you'd like to see an example of Prim's algorithm applied to a graph or if you have any further questions about the code's implementation!**
