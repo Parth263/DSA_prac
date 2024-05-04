@@ -111,9 +111,23 @@ printArray(arr);
 
 
 
+// This `merge` function is a crucial part of the Merge Sort algorithm. It takes in an array `arr`, and three indices `p`, `q`, and `r`, where `p` is the start index of the first subarray, `q` is the end index of the first subarray, and `r` is the end index of the second subarray. The function merges the two subarrays `arr[p..q]` and `arr[q+1..r]` into a single sorted subarray `arr[p..r]`.
+
+// Here's a step-by-step explanation of the `merge` function:
+
+// 1. Calculate the sizes of the two subarrays `n1` and `n2`.
+// 2. Create two temporary arrays `L[]` and `M[]` to hold the elements of the two subarrays.
+// 3. Copy the elements from the original array `arr` to the temporary arrays `L[]` and `M[]`.
+// 4. Initialize three indices `i`, `j`, and `k` to track the current position in `L[]`, `M[]`, and the merged array `arr` respectively.
+// 5. Compare elements from `L[]` and `M[]` and copy the smaller element to the original array `arr`. Increment the corresponding indices (`i`, `j`, `k`).
+// 6. Repeat step 5 until all elements from either `L[]` or `M[]` have been copied to `arr`.
+// 7. If there are any remaining elements in `L[]` or `M[]`, copy them to `arr`.
+
+// After the `merge` function is executed, the subarray `arr[p..r]` will be sorted in ascending order.
 
 
-// Merge Sort is a powerful sorting algorithm based on the divide-and-conquer approach. Here's a breakdown of how it works and its key characteristics:
+
+// // Merge Sort is a powerful sorting algorithm based on the divide-and-conquer approach. Here's a breakdown of how it works and its key characteristics:
 
 // The Core Idea
 
